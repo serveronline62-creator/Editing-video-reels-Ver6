@@ -43,19 +43,20 @@
       justify-content: center;
     }
 
-    /* Frame diatur JS (layoutFrame) mengikuti rasio terpilih */
     .phone-frame {
       position: relative;
       width: 100vw;
       height: 100vh;
       height: 100dvh;
+      max-width: calc(100vh * 9 / 16);
+      max-width: calc(100dvh * 9 / 16);
       background: #000;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    /* ============ LAYAR UPLOAD ============ */
+    /* ============ LAYAR UPLOAD: sekarang PENUH ============ */
     .screen {
       position: relative;
       flex: 1 1 0;
@@ -67,7 +68,7 @@
       justify-content: center;
     }
 
-    /* ============ VIDEO ============ */
+    /* ============ VIDEO (upload & live) ============ */
     .screen video,
     .float-inner video {
       position: absolute;
@@ -86,7 +87,7 @@
     .float-inner video.grabbing { cursor: grabbing; }
 
     /* ============================================================
-       JENDELA LIVE MENGAMBANG (PiP) — MODERN & ELEGAN
+       JENDELA LIVE MENGAMBANG (PiP)
        ============================================================ */
     .float-live {
       position: absolute;
@@ -95,120 +96,54 @@
       width: 42%;
       height: 14%;
       z-index: 15;
+      border-radius: 14px;
       touch-action: none;
-      animation: floatIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      /* JANGAN overflow:hidden — biar panel tools bisa keluar */
     }
 
-    @keyframes floatIn {
-      from { opacity: 0; transform: scale(0.88) translateY(10px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    /* Bingkai utama: gradient border + depth shadow */
     .float-inner {
       position: absolute;
       inset: 0;
-      border-radius: 18px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1.5px solid transparent;
-      background:
-        linear-gradient(#000, #000) padding-box,
-        linear-gradient(135deg,
-          rgba(255, 255, 255, 0.45) 0%,
-          rgba(139, 92, 246, 0.50) 30%,
-          rgba(99, 102, 241, 0.25) 60%,
-          rgba(255, 255, 255, 0.18) 100%) border-box;
+      background: #000;
+      border: 1.5px solid rgba(255,255,255,0.30);
       box-shadow:
-        0 24px 48px -8px rgba(0, 0, 0, 0.85),
-        0 12px 24px -6px rgba(0, 0, 0, 0.65),
-        0 0 40px -10px rgba(99, 102, 241, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
-      transition: box-shadow 0.35s ease;
+        0 10px 30px rgba(0,0,0,0.60),
+        0 0 0 1px rgba(0,0,0,0.45),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
     }
 
-    .float-inner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      background: linear-gradient(115deg,
-        transparent 0%, transparent 35%,
-        rgba(255, 255, 255, 0.055) 48%,
-        rgba(255, 255, 255, 0.055) 52%,
-        transparent 65%, transparent 100%);
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    /* Corner brackets */
-    .float-corner {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(255, 255, 255, 0.35);
-      pointer-events: none;
-      z-index: 4;
-      transition: border-color 0.3s ease;
-    }
-    .float-corner.tl { top: 8px;    left: 8px;   border-right: none; border-bottom: none; border-top-left-radius: 6px; }
-    .float-corner.tr { top: 8px;    right: 8px;  border-left: none;  border-bottom: none; border-top-right-radius: 6px; }
-    .float-corner.bl { bottom: 8px; left: 8px;   border-right: none; border-top: none;    border-bottom-left-radius: 6px; }
-    .float-corner.br { bottom: 8px; right: 8px;  border-left: none;  border-top: none;    border-bottom-right-radius: 6px; }
-
-    .float-live:hover .float-corner,
-    .float-live.recording .float-corner { border-color: rgba(139, 92, 246, 0.9); }
-
-    .float-inner video {
-      border-radius: 16px;
-    }
-
-    /* Placeholder */
-    .float-live .placeholder {
-      gap: 5px;
-      font-size: 9px;
-      padding: 8px;
-      color: rgba(255, 255, 255, 0.5);
-      z-index: 5;
-    }
-    .float-live .placeholder svg { width: 22px; height: 22px; opacity: 0.4; }
-
-    /* Badge LIVE */
+    /* Badge LIVE di dalam jendela mengambang */
     .float-live .badge {
       top: auto;
-      bottom: 8px;
-      left: 8px;
-      padding: 4px 9px 4px 8px;
+      bottom: 6px;
+      left: 6px;
+      padding: 3px 7px;
       font-size: 8px;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
       gap: 4px;
-      background: linear-gradient(135deg,
-        rgba(239, 68, 68, 0.95) 0%,
-        rgba(220, 38, 38, 0.95) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.30);
-      box-shadow:
-        0 4px 12px rgba(239, 68, 68, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.35);
-      z-index: 6;
     }
-    .float-live .badge .dot {
-      width: 5px;
-      height: 5px;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
-    }
+    .float-live .badge .dot { width: 5px; height: 5px; }
 
-    /* Gagang geser: pill glassmorphism */
+    .float-live .placeholder {
+      gap: 4px;
+      font-size: 9px;
+      padding: 6px;
+    }
+    .float-live .placeholder svg { width: 22px; height: 22px; }
+
+    /* --- Gagang geser (tengah-atas) --- */
     .float-move {
       position: absolute;
-      top: 6px;
+      top: 5px;
       left: 50%;
       transform: translateX(-50%);
       width: 42px;
-      height: 18px;
+      height: 22px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.20);
-      background: linear-gradient(135deg,
-        rgba(30, 30, 38, 0.85) 0%,
-        rgba(18, 18, 24, 0.85) 100%);
+      border: 1px solid rgba(255,255,255,0.30);
+      background: rgba(0,0,0,0.62);
       color: #fff;
       display: flex;
       align-items: center;
@@ -217,46 +152,30 @@
       cursor: grab;
       touch-action: none;
       padding: 0;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: background 0.25s, transform 0.18s, border-color 0.25s, box-shadow 0.25s;
-      box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.2s, transform 0.12s, border-color 0.2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
-    .float-move svg { width: 12px; height: 12px; opacity: 0.85; transition: opacity 0.2s; }
-    .float-move:hover {
-      background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.90) 0%,
-        rgba(139, 92, 246, 0.90) 100%);
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow:
-        0 4px 16px rgba(99, 102, 241, 0.60),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-    .float-move:hover svg { opacity: 1; }
+    .float-move svg { width: 15px; height: 15px; }
     .float-move:active,
     .float-move.dragging {
       cursor: grabbing;
-      background: linear-gradient(135deg,
-        rgba(99, 102, 241, 1) 0%,
-        rgba(139, 92, 246, 1) 100%);
-      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(99,102,241,0.85);
+      border-color: rgba(139,92,246,0.85);
       transform: translateX(-50%) scale(0.94);
     }
 
-    /* Gagang resize: circle floating */
+    /* --- Gagang ubah ukuran (kanan-bawah) --- */
     .float-resize {
       position: absolute;
-      right: -4px;
-      bottom: -4px;
-      width: 32px;
-      height: 32px;
+      right: 4px;
+      bottom: 4px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      border: 1.5px solid rgba(255, 255, 255, 0.25);
-      background: linear-gradient(135deg,
-        rgba(30, 30, 38, 0.95) 0%,
-        rgba(18, 18, 24, 0.95) 100%);
+      border: 1px solid rgba(255,255,255,0.30);
+      background: rgba(0,0,0,0.62);
       color: #fff;
       display: flex;
       align-items: center;
@@ -265,37 +184,23 @@
       cursor: nwse-resize;
       touch-action: none;
       padding: 0;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: background 0.25s, transform 0.18s, border-color 0.25s, box-shadow 0.25s;
-      box-shadow:
-        0 6px 18px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.2s, transform 0.12s, border-color 0.2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
-    .float-resize svg { width: 13px; height: 13px; opacity: 0.9; transition: transform 0.2s; }
-    .float-resize:hover {
-      background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.95) 0%,
-        rgba(139, 92, 246, 0.95) 100%);
-      border-color: rgba(255, 255, 255, 0.45);
-      box-shadow:
-        0 8px 22px rgba(99, 102, 241, 0.65),
-        inset 0 1px 0 rgba(255, 255, 255, 0.30);
-    }
-    .float-resize:hover svg { transform: scale(1.15); }
+    .float-resize svg { width: 14px; height: 14px; }
     .float-resize:active,
     .float-resize.dragging {
-      background: linear-gradient(135deg,
-        rgba(99, 102, 241, 1) 0%,
-        rgba(139, 92, 246, 1) 100%);
-      border-color: rgba(255, 255, 255, 0.6);
-      transform: scale(0.9);
+      background: rgba(99,102,241,0.85);
+      border-color: rgba(139,92,246,0.85);
+      transform: scale(0.94);
     }
 
-    /* Tools */
+    /* --- Tools LIVE dipindah ke kanan-atas jendela --- */
     .float-live .screen-tools {
-      top: 30px;
-      right: 6px;
+      top: 5px;
+      right: 5px;
       bottom: auto;
       left: auto;
       z-index: 22;
@@ -304,106 +209,21 @@
     .float-live .tool-toggle {
       width: 26px;
       height: 26px;
-      border: 1px solid rgba(255, 255, 255, 0.20);
-      background: linear-gradient(135deg,
-        rgba(30, 30, 38, 0.85) 0%,
-        rgba(18, 18, 24, 0.85) 100%);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow:
-        0 3px 10px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition: all 0.25s;
     }
-    .float-live .tool-toggle svg { width: 12px; height: 12px; }
-    .float-live .tool-toggle:hover {
-      background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.85) 0%,
-        rgba(139, 92, 246, 0.85) 100%);
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow:
-        0 4px 14px rgba(99, 102, 241, 0.60),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-    .float-live .tool-toggle.open {
-      background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.95) 0%,
-        rgba(139, 92, 246, 0.95) 100%);
-      border-color: rgba(255, 255, 255, 0.45);
-      box-shadow:
-        0 4px 14px rgba(99, 102, 241, 0.70),
-        inset 0 1px 0 rgba(255, 255, 255, 0.30);
-    }
+    .float-live .tool-toggle svg { width: 13px; height: 13px; }
+
     .float-live .tool-panel {
-      padding: 10px;
-      border-radius: 14px;
-      gap: 8px;
-      background: linear-gradient(135deg,
-        rgba(22, 22, 30, 0.97) 0%,
-        rgba(14, 14, 20, 0.97) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow:
-        0 16px 40px rgba(0, 0, 0, 0.75),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      padding: 8px;
+      border-radius: 12px;
+      gap: 6px;
     }
-    .float-live .pos-grid { width: 84px; gap: 4px; }
-    .float-live .tool-row { gap: 5px; }
-    .float-live .tool-row button {
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
-      font-size: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.05);
-      transition: all 0.2s;
+    .float-live .pos-grid {
+      width: 78px;
+      gap: 3px;
     }
-    .float-live .tool-row button:hover {
-      background: rgba(99, 102, 241, 0.30);
-      border-color: rgba(99, 102, 241, 0.50);
-    }
-    .float-live .zoom-label {
-      font-size: 9px;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    /* Efek saat merekam */
-    .float-live.recording .float-inner {
-      box-shadow:
-        0 24px 48px -8px rgba(0, 0, 0, 0.85),
-        0 12px 24px -6px rgba(0, 0, 0, 0.65),
-        0 0 0 1.5px rgba(239, 68, 68, 0.60),
-        0 0 50px -6px rgba(239, 68, 68, 0.80),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10);
-      animation: recPulseGlow 2s ease-in-out infinite;
-    }
-    .float-live.recording .float-corner {
-      border-color: rgba(239, 68, 68, 0.9);
-    }
-    .float-live.recording .badge .dot {
-      animation: pulseDot 1s ease-in-out infinite;
-    }
-
-    @keyframes recPulseGlow {
-      0%, 100% {
-        box-shadow:
-          0 24px 48px -8px rgba(0, 0, 0, 0.85),
-          0 12px 24px -6px rgba(0, 0, 0, 0.65),
-          0 0 0 1.5px rgba(239, 68, 68, 0.45),
-          0 0 40px -8px rgba(239, 68, 68, 0.55),
-          inset 0 1px 0 rgba(255, 255, 255, 0.10);
-      }
-      50% {
-        box-shadow:
-          0 24px 48px -8px rgba(0, 0, 0, 0.85),
-          0 12px 24px -6px rgba(0, 0, 0, 0.65),
-          0 0 0 1.5px rgba(239, 68, 68, 0.75),
-          0 0 60px -4px rgba(239, 68, 68, 0.95),
-          inset 0 1px 0 rgba(255, 255, 255, 0.10);
-      }
-    }
+    .float-live .tool-row { gap: 4px; }
+    .float-live .tool-row button { width: 22px; height: 22px; border-radius: 7px; font-size: 13px; }
+    .float-live .zoom-label { font-size: 9px; }
 
     /* ============================================================ */
 
@@ -662,7 +482,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      flex-wrap: wrap;
+      flex-wrap: wrap;   /* ✅ tambahan agar tombol baru tidak meluber */
     }
 
     .circle-btn {
@@ -715,7 +535,7 @@
     }
     .pill.icon-only { padding: 8px; width: 34px; justify-content: center; }
 
-    /* Preset ukuran jendela LIVE */
+    /* ====== PRESET UKURAN JENDELA LIVE ====== */
     .split-row {
       gap: 6px;
       padding: 0 2px;
@@ -1038,12 +858,6 @@
         </span>
       </div>
 
-      <!-- Corner brackets dekoratif -->
-      <span class="float-corner tl"></span>
-      <span class="float-corner tr"></span>
-      <span class="float-corner bl"></span>
-      <span class="float-corner br"></span>
-
       <!-- Gagang geser jendela -->
       <button class="float-move" id="liveMoveHandle" type="button" title="Geser jendela LIVE">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -1156,14 +970,14 @@
           </svg>
           <span id="qualityLabel">HD</span>
         </button>
-      </div>
-
-      <!-- Rasio tampilan & hasil rekaman -->
-      <div class="ctrl-row split-row">
-        <span class="split-label">RASIO</span>
-        <button class="split-btn active" data-ratio="9:16">9:16</button>
-        <button class="split-btn" data-ratio="1:1">1:1</button>
-        <button class="split-btn" data-ratio="16:9">16:9</button>
+        <!-- ✅ Tombol baru: toggle rasio video upload -->
+        <button class="pill" id="btnFitMode" title="Rasio tampilan video upload" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
+            <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+          </svg>
+          <span id="fitModeLabel">9:16</span>
+        </button>
       </div>
 
       <!-- Preset ukuran jendela LIVE -->
@@ -1241,21 +1055,16 @@ const QUALITY_PRESETS = {
 const QUALITY_ORDER = ['480', '720', '1080'];
 const SEEK_STEP = 5;
 
-/* Zoom bebas 1× – 6× */
+/* ✅ Zoom bebas 1× – 6× (di dalam tiap video) */
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 6;
 
-/* Rasio tampilan & hasil rekaman */
-const ASPECTS = {
-  '9:16': { w: 9,  h: 16, label: '9:16 Portrait'  },
-  '1:1':  { w: 1,  h: 1,  label: '1:1 Kotak'      },
-  '16:9': { w: 16, h: 9,  label: '16:9 Landscape' }
-};
+const TARGET_ASPECT = 16 / 9;
 
-/* JENDELA LIVE MENGAMBANG */
-const FLOAT_ASPECT = 16 / 9;
-const MIN_FLOAT_W  = 0.18;
-const MAX_FLOAT_W  = 1.0;
+/* ✅ JENDELA LIVE MENGAMBANG */
+const FLOAT_ASPECT   = 16 / 9;   // lebar : tinggi jendela LIVE
+const MIN_FLOAT_W    = 0.18;     // lebar minimum (fraksi lebar frame)
+const MAX_FLOAT_W    = 1.0;      // lebar maksimum
 
 const AUTO_STOP_ON_UPLOAD_END = true;
 const LOOP_UPLOAD_PREVIEW     = true;
@@ -1271,10 +1080,14 @@ const state = {
   mediaRecorder: null, recordedChunks: [], recDest: null,
   recStartTime: 0, timerInterval: null, drawRAF: null,
   quality: '720',
-  aspect: '9:16',
 
+  /* ✅ mode tampilan video upload: 'cover' = penuhi 9:16, 'contain' = rasio asli */
+  uploadFit: 'cover',
+
+  /* ✅ posisi & ukuran jendela LIVE (ternormalisasi 0..1 terhadap phone-frame) */
   float: { x: 0.29, y: 0.05, w: 0.42, h: 0.14 },
 
+  /* ✅ posisi + zoom di dalam tiap video */
   views: {
     live:   { zoom: 1, panX: 0.5, panY: 0.5 },
     upload: { zoom: 1, panX: 0.5, panY: 0.5 }
@@ -1309,6 +1122,8 @@ const btnClosePreview   = $('btnClosePreview');
 const btnSaveGallery    = $('btnSaveGallery');
 const btnDownload       = $('btnDownload');
 const qualityLabel      = $('qualityLabel');
+const btnFitMode        = $('btnFitMode');
+const fitModeLabel      = $('fitModeLabel');
 const recText           = btnRecord.querySelector('.rec-text');
 
 const btnPlayPause      = $('btnPlayPause');
@@ -1319,15 +1134,13 @@ const videoProgress     = $('videoProgress');
 const videoProgressFill = $('videoProgressFill');
 
 const phoneFrame        = document.querySelector('.phone-frame');
-const controlPanel      = document.querySelector('.control-panel');
 const liveScreen        = $('liveScreen');
 const uploadScreen      = $('uploadScreen');
 
 const liveMoveHandle    = $('liveMoveHandle');
 const liveResizeHandle  = $('liveResizeHandle');
 
-const RECORD_LOCKED_BTNS = [btnStartCam, btnSwitchCam, btnMic, btnUpload, btnQuality];
-document.querySelectorAll('[data-ratio]').forEach(b => RECORD_LOCKED_BTNS.push(b));
+const RECORD_LOCKED_BTNS = [btnStartCam, btnSwitchCam, btnMic, btnUpload, btnQuality, btnFitMode];
 const RECORD_ACTIVE_BTNS = [btnPlayPause, btnBack, btnNext, btnStop];
 
 const ICON_PLAY  = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
@@ -1337,7 +1150,7 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const clamp01 = v => Math.min(1, Math.max(0, v));
 
 /* ============================================================
-   CONTROLLER TIAP LAYAR
+   CONTROLLER TIAP LAYAR (LIVE = mengambang, UPLOAD = penuh)
    ============================================================ */
 const VIEW_CTRL = [
   {
@@ -1354,21 +1167,27 @@ const VIEW_CTRL = [
 const ctrlByKey = Object.fromEntries(VIEW_CTRL.map(c => [c.key, c]));
 
 /* ============================================================
-   GEOMETRI "COVER"
+   GEOMETRI "COVER" / "CONTAIN" (dipakai CSS & canvas → WYSIWYG)
    ============================================================ */
-function getFitInfo(videoEl, screenEl) {
+function getFitInfo(videoEl, screenEl, mode = 'cover') {
   const vw = videoEl.videoWidth || 0;
   const vh = videoEl.videoHeight || 0;
   const cw = screenEl.clientWidth;
   const ch = screenEl.clientHeight;
   if (!vw || !vh || !cw || !ch) return null;
-  const s0 = Math.max(cw / vw, ch / vh);
-  return { vw, vh, cw, ch, s0 };
+  const s0 = (mode === 'contain')
+    ? Math.min(cw / vw, ch / vh)   // ✅ rasio asli → video utuh (letterbox)
+    : Math.max(cw / vw, ch / vh);  // 9:16 → penuhi layar (crop)
+  return { vw, vh, cw, ch, s0, mode };
+}
+
+function fitModeOf(ctrl) {
+  return ctrl.key === 'upload' ? state.uploadFit : 'cover';
 }
 
 function applyView(ctrl) {
   const vs = state.views[ctrl.key];
-  const info = getFitInfo(ctrl.video, ctrl.screen);
+  const info = getFitInfo(ctrl.video, ctrl.screen, fitModeOf(ctrl));
   if (!info) return;
 
   const { vw, vh, cw, ch, s0 } = info;
@@ -1399,51 +1218,6 @@ function resetView(ctrl, silent = false) {
 }
 
 /* ============================================================
-   RASIO TAMPILAN (9:16 / 1:1 / 16:9)
-   ============================================================ */
-function layoutFrame() {
-  const vw = window.innerWidth  || document.documentElement.clientWidth  || 360;
-  const vh = window.innerHeight || document.documentElement.clientHeight || 640;
-  const ar  = ASPECTS[state.aspect] || ASPECTS['9:16'];
-  const ratio = ar.w / ar.h;
-
-  let frameW = Math.round(vw);
-
-  for (let pass = 0; pass < 3; pass++) {
-    phoneFrame.style.width = frameW + 'px';
-
-    const panelH = controlPanel.offsetHeight || 180;
-    const availH = Math.max(120, vh - panelH);
-    const screenW = Math.min(frameW, availH * ratio);
-    const screenH = screenW / ratio;
-
-    const nextW = Math.round(screenW);
-    phoneFrame.style.height = Math.round(screenH + panelH) + 'px';
-
-    if (nextW === frameW) break;
-    frameW = nextW;
-  }
-  phoneFrame.style.width = frameW + 'px';
-}
-
-function setAspect(key) {
-  if (!ASPECTS[key] || state.aspect === key) return;
-
-  state.aspect = key;
-
-  document.querySelectorAll('[data-ratio]').forEach(b => {
-    b.classList.toggle('active', b.dataset.ratio === key);
-  });
-
-  layoutFrame();
-  applyQuality(state.quality);
-  applyFloat();
-  applyAllViews();
-
-  showToast('🖼️ Rasio: ' + ASPECTS[key].label);
-}
-
-/* ============================================================
    JENDELA LIVE MENGAMBANG — POSISI & UKURAN
    ============================================================ */
 function frameSize() {
@@ -1451,6 +1225,7 @@ function frameSize() {
   return { w: r.width || 1, h: r.height || 1 };
 }
 
+/* Jaga rasio 16:9 & jangan keluar dari frame */
 function normalizeFloat() {
   const f = state.float;
   const fs = frameSize();
@@ -1463,6 +1238,7 @@ function normalizeFloat() {
   f.y = clamp(f.y, 0, Math.max(0, 1 - f.h));
 }
 
+/* Terapkan ke DOM (persentase → responsif) */
 function applyFloat() {
   normalizeFloat();
   const f = state.float;
@@ -1471,6 +1247,7 @@ function applyFloat() {
   liveScreen.style.width  = (f.w * 100).toFixed(3) + '%';
   liveScreen.style.height = (f.h * 100).toFixed(3) + '%';
 
+  /* ukuran kotak berubah → posisi/zoom di dalam video perlu dihitung ulang */
   applyView(ctrlByKey.live);
   updateSizePresets();
 }
@@ -1490,6 +1267,7 @@ function isFloatVisible() {
   return !liveScreen.classList.contains('hidden');
 }
 
+/* Set lebar (fraksi) sambil mempertahankan titik tengah */
 function setFloatWidth(wNorm, silent = false) {
   if (wNorm <= 0) { hideLiveFloat(); if (!silent) showToast('🫥 Jendela LIVE disembunyikan'); return; }
 
@@ -1518,7 +1296,7 @@ function updateSizePresets() {
   });
 }
 
-/* Drag geser jendela */
+/* ---------- Drag geser jendela ---------- */
 let floatDrag = null;
 
 function beginFloatDrag(e, mode) {
@@ -1554,6 +1332,7 @@ function onFloatDragMove(e) {
     state.float.x = nx / d.fs.w;
     state.float.y = ny / d.fs.h;
   } else {
+    /* resize: lebar mengikuti delta X (kalau X kecil, pakai delta Y) */
     const delta = (Math.abs(dx) >= Math.abs(dy)) ? dx : dy * FLOAT_ASPECT;
 
     const minPx = MIN_FLOAT_W * d.fs.w;
@@ -1586,14 +1365,9 @@ window.addEventListener('pointermove', onFloatDragMove, { passive: false });
 window.addEventListener('pointerup', endFloatDrag);
 window.addEventListener('pointercancel', endFloatDrag);
 
-/* Preset ukuran LIVE */
+/* Preset ukuran */
 document.querySelectorAll('[data-size]').forEach(b => {
   b.addEventListener('click', () => setFloatWidth(parseFloat(b.dataset.size)));
-});
-
-/* Preset rasio */
-document.querySelectorAll('[data-ratio]').forEach(b => {
-  b.addEventListener('click', () => setAspect(b.dataset.ratio));
 });
 
 /* ============================================================
@@ -1670,7 +1444,7 @@ function initTools(ctrl) {
 }
 
 /* ============================================================
-   GESTURE: PAN + PINCH + DOUBLE-TAP
+   GESTURE: GESER (PAN) + CUBIT (ZOOM) + DOUBLE-TAP RESET
    ============================================================ */
 function showHint(ctrl) {
   if (!ctrl.hint) return;
@@ -1734,7 +1508,7 @@ function setupGestures(ctrl) {
       const dy = e.clientY - gesture.startY;
       if (Math.abs(dx) > 3 || Math.abs(dy) > 3) gesture.moved = true;
 
-      const info = getFitInfo(el, ctrl.screen);
+      const info = getFitInfo(el, ctrl.screen, fitModeOf(ctrl));
       if (!info) return;
       const W = info.vw * info.s0 * vs.zoom;
       const H = info.vh * info.s0 * vs.zoom;
@@ -1806,30 +1580,23 @@ liveVideo.addEventListener('loadedmetadata', () => applyView(ctrlByKey.live));
 uploadVideo.addEventListener('loadedmetadata', () => applyView(ctrlByKey.upload));
 
 /* ============================================================
-   CANVAS
+   CANVAS — OUTPUT 9:16
    ============================================================ */
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
 
 function applyQuality(q) {
-  const p  = QUALITY_PRESETS[q];
-  const ar = ASPECTS[state.aspect] || ASPECTS['9:16'];
-
-  let cw, ch;
-  if (ar.w <= ar.h) { cw = p.w; ch = Math.round(p.w * ar.h / ar.w); }
-  else              { ch = p.w; cw = Math.round(p.w * ar.w / ar.h); }
-
-  canvas.width  = Math.max(2, cw - (cw % 2));
-  canvas.height = Math.max(2, ch - (ch % 2));
-
+  const p = QUALITY_PRESETS[q];
+  canvas.width  = p.w;
+  canvas.height = Math.max(2, Math.round((p.w * TARGET_ASPECT) / 2) * 2);
   state.quality = q;
   qualityLabel.textContent = p.label;
 }
 
 /* ============================================================
-   DRAW — WYSIWYG ke canvas
+   DRAW — replikasi persis transform CSS ke canvas (cover/contain)
    ============================================================ */
-function drawVideoCover(video, viewState, dx, dy, dw, dh) {
+function drawVideoFit(video, viewState, dx, dy, dw, dh, mode = 'cover') {
   if (dw <= 0 || dh <= 0) return;
 
   const vw = video.videoWidth, vh = video.videoHeight;
@@ -1839,15 +1606,22 @@ function drawVideoCover(video, viewState, dx, dy, dw, dh) {
     return;
   }
 
-  const s0 = Math.max(dw / vw, dh / vh);
-  const z  = clamp(viewState.zoom, MIN_ZOOM, MAX_ZOOM);
+  const s0 = (mode === 'contain')
+    ? Math.min(dw / vw, dh / vh)
+    : Math.max(dw / vw, dh / vh);
 
-  const sw = dw / (s0 * z);
-  const sh = dh / (s0 * z);
-  const sx = viewState.panX * (vw - sw);
-  const sy = viewState.panY * (vh - sh);
+  const z = clamp(viewState.zoom, MIN_ZOOM, MAX_ZOOM);
+  const W = vw * s0 * z;
+  const H = vh * s0 * z;
+  const left = dx - viewState.panX * (W - dw);
+  const top  = dy - viewState.panY * (H - dh);
 
-  try { ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh); } catch (e) {}
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(dx, dy, dw, dh);
+  ctx.clip();
+  try { ctx.drawImage(video, left, top, W, H); } catch (e) {}
+  ctx.restore();
 }
 
 function startDrawLoop() {
@@ -1858,10 +1632,12 @@ function startDrawLoop() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, W, H);
 
+    /* --- Latar: video upload --- */
     if (state.uploadReady) {
-      drawVideoCover(uploadVideo, state.views.upload, 0, 0, W, H);
+      drawVideoFit(uploadVideo, state.views.upload, 0, 0, W, H, state.uploadFit);
     }
 
+    /* --- Overlay: jendela LIVE mengambang --- */
     if (state.stream && isFloatVisible()) {
       const f  = state.float;
       const fx = f.x * W;
@@ -1869,8 +1645,9 @@ function startDrawLoop() {
       const fw = f.w * W;
       const fh = f.h * H;
 
-      drawVideoCover(liveVideo, state.views.live, fx, fy, fw, fh);
+      drawVideoFit(liveVideo, state.views.live, fx, fy, fw, fh, 'cover');
 
+      /* border putih tipis, sama seperti di preview */
       const lw = Math.max(2, fw * 0.012);
       ctx.strokeStyle = 'rgba(255,255,255,0.55)';
       ctx.lineWidth = lw;
@@ -1965,6 +1742,9 @@ uploadVideo.addEventListener('pause', updatePlayPauseIcon);
 uploadVideo.addEventListener('timeupdate', updateProgressBar);
 uploadVideo.addEventListener('loadedmetadata', updateProgressBar);
 
+/* ============================================================
+   AUTO-STOP REKAMAN SAAT VIDEO UPLOAD SELESAI
+   ============================================================ */
 uploadVideo.addEventListener('ended', () => {
   updatePlayPauseIcon();
   updateProgressBar();
@@ -2010,6 +1790,7 @@ async function startCamera(silent = false) {
     btnSwitchCam.classList.remove('hidden');
     btnStartCam.classList.add('active');
 
+    /* ✅ Tampilkan jendela LIVE mengambang */
     showLiveFloat(true);
 
     const c = ctrlByKey.live;
@@ -2114,6 +1895,7 @@ fileInput.addEventListener('change', async (e) => {
 
     uploadPlaceholder.classList.add('hidden');
     state.uploadReady = true;
+    btnFitMode.disabled = false;   /* ✅ aktifkan tombol toggle rasio */
 
     const c = ctrlByKey.upload;
     resetView(c, true);
@@ -2150,7 +1932,33 @@ fileInput.addEventListener('change', async (e) => {
 });
 
 /* ============================================================
-   REKAM
+   RASIO TAMPILAN VIDEO UPLOAD: 9:16 (cover) ↔ ASLI (contain)
+   ============================================================ */
+function setUploadFit(mode, silent = false) {
+  state.uploadFit = (mode === 'contain') ? 'contain' : 'cover';
+
+  fitModeLabel.textContent = state.uploadFit === 'contain' ? 'Asli' : '9:16';
+  btnFitMode.classList.toggle('active', state.uploadFit === 'contain');
+
+  const c = ctrlByKey.upload;
+  resetView(c, true);        // zoom & posisi balik ke tengah
+  applyView(c);
+  updateGridActive(c);
+
+  if (!silent) {
+    showToast(state.uploadFit === 'contain'
+      ? '🖼️ Rasio asli — video tampil utuh (tanpa crop)'
+      : '📱 9:16 — video memenuhi layar', 'success');
+  }
+}
+
+btnFitMode.addEventListener('click', () => {
+  if (!state.uploadReady) { showToast('Upload video dulu', 'error'); return; }
+  setUploadFit(state.uploadFit === 'contain' ? 'cover' : 'contain');
+});
+
+/* ============================================================
+   REKAM — output 9:16
    ============================================================ */
 async function startRecording() {
   if (state.isRecording) return;
@@ -2246,7 +2054,6 @@ async function startRecording() {
     state.isRecording = true;
     state.recStartTime = Date.now();
     recBadge.classList.add('show');
-    liveScreen.classList.add('recording');
     btnRecord.classList.add('recording');
     recText.textContent = 'Stop Rekam';
     state.timerInterval = setInterval(updateRecTimer, 500);
@@ -2255,7 +2062,7 @@ async function startRecording() {
     RECORD_LOCKED_BTNS.forEach(b => b.disabled = true);
     RECORD_ACTIVE_BTNS.forEach(b => b.disabled = false);
 
-    showToast('🔴 Merekam — jendela LIVE bisa digeser & diubah ukuran', 'success');
+    showToast('🔴 Merekam 9:16 — jendela LIVE bisa digeser & diubah ukuran', 'success');
   } catch (err) {
     showToast('Rekam gagal: ' + err.message, 'error');
   }
@@ -2270,11 +2077,11 @@ function stopRecording() {
   if (state.timerInterval) clearInterval(state.timerInterval);
   state.timerInterval = null;
   recBadge.classList.remove('show');
-  liveScreen.classList.remove('recording');
   btnRecord.classList.remove('recording');
   recText.textContent = 'Mulai Rekam';
 
   RECORD_LOCKED_BTNS.forEach(b => b.disabled = false);
+  btnFitMode.disabled = !state.uploadReady;   /* ✅ tetap terkunci bila belum upload */
   RECORD_ACTIVE_BTNS.forEach(b => b.disabled = false);
 }
 
@@ -2315,12 +2122,11 @@ async function saveToGallery() {
   const baseType = state.previewMime.split(';')[0];
   const ext = baseType.includes('mp4') ? 'mp4' : 'webm';
   const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-  const tag = state.aspect.replace(':', 'x');
-  const file = new File([state.previewBlob], `split-${tag}-${stamp}.${ext}`, { type: baseType });
+  const file = new File([state.previewBlob], `split-9x16-${stamp}.${ext}`, { type: baseType });
 
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
     try {
-      await navigator.share({ files: [file], title: 'Split Screen Video' });
+      await navigator.share({ files: [file], title: 'Split Screen Video 9:16' });
       showToast('Tersimpan ke galeri', 'success');
       return;
     } catch (err) {
@@ -2335,11 +2141,10 @@ function downloadFile() {
   const baseType = state.previewMime.split(';')[0];
   const ext = baseType.includes('mp4') ? 'mp4' : 'webm';
   const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-  const tag = state.aspect.replace(':', 'x');
   const url = URL.createObjectURL(state.previewBlob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `split-${tag}-${stamp}.${ext}`;
+  a.download = `split-9x16-${stamp}.${ext}`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -2357,6 +2162,7 @@ function formatBytes(b) {
    EVENT UTAMA
    ============================================================ */
 btnStartCam.addEventListener('click', () => {
+  /* kalau kamera sudah aktif tapi jendela disembunyikan → tampilkan lagi */
   if (state.stream && !isFloatVisible()) {
     showLiveFloat(false);
     return;
@@ -2394,9 +2200,8 @@ let resizeTimeout;
 function handleResize() {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
-    layoutFrame();
-    applyQuality(state.quality);
     applyFloat();
+    applyQuality(state.quality);
     applyAllViews();
   }, 150);
 }
@@ -2425,13 +2230,12 @@ window.addEventListener('beforeunload', cleanup);
    ============================================================ */
 applyQuality('720');
 requestAnimationFrame(() => {
-  layoutFrame();
   applyFloat();
   applyAllViews();
 });
 updatePlayPauseIcon();
 
-console.log('%c📱 Split Recorder — LIVE mengambang modern | output fleksibel 9:16 / 1:1 / 16:9',
+console.log('%c📱 Split Recorder — LIVE mengambang (geser + resize) | output 9:16 | upload: 9:16 ↔ Asli',
   'color:#6366f1;font-weight:bold;font-size:14px');
 </script>
 
